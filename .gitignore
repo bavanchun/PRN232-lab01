@@ -21,7 +21,3 @@ Thumbs.db
 
 ## Env
 .env
-
-## Evidence runtime output (regenerate via evidence/capture-evidence.sh)
-evidence/output/
-evidence/EVIDENCE.md

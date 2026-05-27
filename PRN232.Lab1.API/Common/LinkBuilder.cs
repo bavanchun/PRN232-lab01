@@ -45,10 +45,14 @@ public class LinkBuilder
 
         string Build(int p)
         {
-            var qs = new Dictionary<string, object?> { ["page"] = p, ["size"] = pageSize };
+            var qs = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["page"] = p,
+                ["size"] = pageSize
+            };
             if (extraQs != null)
                 foreach (var kv in extraQs)
-                    if (kv.Key != "page" && kv.Key != "size" && kv.Value != null) qs[kv.Key] = kv.Value;
+                    if (!qs.ContainsKey(kv.Key) && kv.Value != null) qs[kv.Key] = kv.Value;
             var rv = MergeWithVersion(qs);
             return _gen.GetUriByName(ctx, routeName, rv) ?? string.Empty;
         }

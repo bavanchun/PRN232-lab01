@@ -1,0 +1,10 @@
+**/bin
+**/obj
+**/.vs
+**/.vscode
+**/*.user
+**/Properties/launchSettings.json
+.git
+.gitignore
+README.md
+*.md

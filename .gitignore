@@ -1,0 +1,23 @@
+## .NET
+bin/
+obj/
+**/bin/
+**/obj/
+*.user
+*.suo
+*.userprefs
+**/.vs/
+
+## Logs
+*.log
+
+## OS
+.DS_Store
+Thumbs.db
+
+## IDE
+.idea/
+.vscode/
+
+## Env
+.env

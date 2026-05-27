@@ -58,6 +58,19 @@ echo "" >> "$MD"
 echo "Stack must be running: \`docker compose up -d\`" >> "$MD"
 echo "" >> "$MD"
 
+# ── Rubric 3: Seed counts captured FIRST, before any POST mutation ────────────
+echo "## R03 — DB seed counts (captured before any mutation)" >> "$MD"
+echo "" >> "$MD"
+echo "| Resource | totalItems |" >> "$MD"
+echo "|---|---|" >> "$MD"
+for r in semesters subjects courses students enrollments; do
+  total=$(curl -s "$BASE/api/v1/$r?page=1&size=1" | jq -r '.pagination.totalItems // "?"')
+  echo "| $r | $total |" >> "$MD"
+done
+echo "" >> "$MD"
+echo "**Expected:** 5 / 10 / 20 / 50 / 500" >> "$MD"
+echo "" >> "$MD"
+
 # ── Rubric 5: RESTful naming (Swagger doc lists endpoints) ────────────────────
 capture "R05-swagger-spec" "Swagger/OpenAPI document (plural, no verbs)" GET "/swagger/v1/swagger.json"
 
@@ -104,19 +117,6 @@ capture "SUBMISSION-courses-id-enrollments-expand-student" \
 # ── HATEOAS proof (V3 bonus, not required but nice to have) ───────────────────
 capture "BONUS-hateoas-links" "Response contains _links (HAL)" \
   GET "/api/v1/students/2"
-
-# ── Counts (Rubric 3: seed verification — alternative to sqlcmd) ──────────────
-echo "" >> "$MD"
-echo "## R03 — DB seed counts (via list totals)" >> "$MD"
-echo "" >> "$MD"
-echo "| Resource | totalItems |" >> "$MD"
-echo "|---|---|" >> "$MD"
-for r in semesters subjects courses students enrollments; do
-  total=$(curl -s "$BASE/api/v1/$r?page=1&size=1" | jq -r '.pagination.totalItems // "?"')
-  echo "| $r | $total |" >> "$MD"
-done
-echo "" >> "$MD"
-echo "**Expected:** 5 / 10 / 20 / 50 / 500" >> "$MD"
 
 echo "" >> "$MD"
 echo "## R10 — Docker stack status" >> "$MD"
